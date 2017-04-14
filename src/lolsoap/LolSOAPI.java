@@ -23,6 +23,7 @@ public interface LolSOAPI {
 	@WebMethod String getNameOfCham();
         @WebMethod String getImage();
         @WebMethod void reset();
+        @WebMethod void submitGuess(String guess);
         @WebMethod Bruger hentBruger(String user, String pass) throws Exception;
     
 }

@@ -113,4 +113,9 @@ public class LolLogikImpl implements LolSOAPI {
 
     }
 
+    @Override
+    public void submitGuess(String guess) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
