@@ -9,6 +9,8 @@ import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
 import java.awt.image.BufferedImage;
 import java.rmi.Naming;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.jws.WebService;
 import javax.ws.rs.client.Client;
@@ -25,84 +27,51 @@ import org.json.JSONObject;
 @WebService(endpointInterface = "lolsoap.LolSOAPI")
 public class LolLogikImpl implements LolSOAPI {
 
-    String nameOfChamp = null;
-    String lolVersion = null;
-    String url = null;
+   
+    HashMap<Integer, GameInstance> currentGames;
 
-    @Override
-    public void startGame() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public LolLogikImpl() {
+        currentGames = new HashMap<Integer, GameInstance>();
+         
     }
 
     @Override
-    public String getNameOfCham() {
-        if (nameOfChamp == null) {
+    public void startGame(int gameID) {
+        currentGames.get(gameID).startGame();
+        
+    }
+
+    @Override
+    public String getNameOfCham(int gameID) {
+        if(currentGames.get(gameID) != null){
+            if (currentGames.get(gameID).nameOfChamp == null) {
             return "No Name";
-        } else {
-            return nameOfChamp;
-        }
-    }
-
-    @Override
-    public String getImage() {
-
-        Client client = ClientBuilder.newClient();
-        Response res = client.target("https://global.api.riotgames.com/api/lol/static-data/EUW"
-                + "/v1.2/champion?champData=info&api_key=RGAPI-0120396b-3f2b-4cb3-bbc9-4f27240f6d45")
-                .request(MediaType.APPLICATION_JSON).get();
-
-        String svar = res.readEntity(String.class);
-
-        try {
-
-            JSONObject json = new JSONObject(svar);
-            //JSONArray k = json.getJSONArray("data");
-
-            JSONObject songs = json.getJSONObject("data");
-            Iterator x = songs.keys();
-            JSONArray jsonArray = new JSONArray();
-
-            while (x.hasNext()) {
-                String key = (String) x.next();
-                jsonArray.put(songs.get(key));
+            } else {
+            return currentGames.get(gameID).nameOfChamp;
             }
-
-            int randomNum = 0 + (int) (Math.random() * 133);
-            System.out.println(jsonArray.getJSONObject(randomNum).getString("name"));
-            nameOfChamp = jsonArray.getJSONObject(randomNum).getString("name");
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+        return "No Name";
+    }
 
-        Response version = client.target("https://global.api.riotgames.com/api/lol/static-data/EUW"
-                + "/v1.2/versions?api_key=RGAPI-0120396b-3f2b-4cb3-bbc9-4f27240f6d45")
-                .request(MediaType.APPLICATION_JSON).get();
-
-        String versionNr = version.readEntity(String.class);
-
-        try {
-
-            JSONArray versionArray = new JSONArray(versionNr);
-
-            System.out.println(versionArray.get(0));
-            lolVersion = versionArray.get(0).toString();
-
-            url = "http://ddragon.leagueoflegends.com/cdn/" + lolVersion + "/img/champion/" + nameOfChamp + ".png";
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
+    @Override
+    public String[] getGameData(int gameID) {
+        
+        
+        if(currentGames.get(gameID) != null){
+       return this.currentGames.get(gameID).getGameData();
         }
-        return url;
+        else{
+            return new String[]{"no data", "no data"};
+            
+        }
 
     }
 
     @Override
-    public void reset() {
-        nameOfChamp = null;
-        url = null;
-        lolVersion = null;
+    public void reset(int gameID) {
+        if(currentGames.get(gameID) != null){
+        this.currentGames.get(gameID).resetGame();
+        }
     }
 
     @Override
@@ -114,8 +83,47 @@ public class LolLogikImpl implements LolSOAPI {
     }
 
     @Override
-    public void submitGuess(String guess) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean submitGuess(String guess, Player p) {
+        
+        boolean gameOver = currentGames.get(p.gameID).guessChamp(p, guess);
+        if (gameOver){
+            
+            currentGames.remove(p.gameID);
+        }
+        return gameOver;
+       
+    }
+
+
+
+    @Override
+    public String joinGame(int gameID, Player p) {
+        if(currentGames.get(gameID) != null && currentGames.get(gameID).joinable){
+        currentGames.get(gameID).addPlayer(p);
+        return "You are now in game number: " + gameID;
+        }
+        else{
+            
+            return "No such game id";
+        }
+       
+    }
+
+    @Override
+    public GameInstance[] getGames() {
+        GameInstance[] games = new GameInstance[currentGames.size()];
+        Integer[] keys = (Integer[]) currentGames.keySet().toArray();
+        
+        
+        for (int i = 0; i < currentGames.size(); i++){
+            
+            
+            
+            games[i] = currentGames.get(keys[i]);
+                    
+        }
+        return games;
+        
     }
 
 }
