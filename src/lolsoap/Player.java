@@ -11,12 +11,13 @@ package lolsoap;
  */
 public class Player {
     
-    String ID;
+    int ID;
     boolean hasWon;
     int gameID;
     
+    public Player(){};
     
-    public Player(String id, int gameID){
+    public Player(int id, int gameID){
         
         this.ID = id;
         hasWon = false;

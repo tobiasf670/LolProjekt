@@ -27,6 +27,7 @@ public class LolSOAP {
     public static void main(String[] args) {
         // TODO code application logic here
       LolLogikImpl k = new LolLogikImpl();
+      k.currentGames.put(1, new GameInstance());
 		Endpoint.publish("http://[::]:9901/LolSOAP", k);
 		
 		System.out.println("Kontotjeneste registreret.");

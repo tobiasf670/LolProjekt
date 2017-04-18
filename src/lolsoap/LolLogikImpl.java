@@ -12,6 +12,7 @@ import java.rmi.Naming;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 import javax.jws.WebService;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -54,11 +55,11 @@ public class LolLogikImpl implements LolSOAPI {
     }
 
     @Override
-    public String[] getGameData(int gameID) {
+    public String[] renewData(int gameID) {
         
         
         if(currentGames.get(gameID) != null){
-       return this.currentGames.get(gameID).getGameData();
+       return this.currentGames.get(gameID).renewGameData();
         }
         else{
             return new String[]{"no data", "no data"};
@@ -123,6 +124,23 @@ public class LolLogikImpl implements LolSOAPI {
                     
         }
         return games;
+        
+    }
+
+    @Override
+    public int createGame(Player p) {
+        p.ID = new Random().nextInt();
+        GameInstance newGame = new GameInstance();
+        newGame.gameID = currentGames.size()+1;
+        newGame.players.add(p);
+        currentGames.put(newGame.gameID, newGame);
+        return p.ID;
+    }
+
+    @Override
+    public String[] getGameData(int gameID) {
+        
+        return currentGames.get(gameID).retrieveCurrentGameData();
         
     }
 
