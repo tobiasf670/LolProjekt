@@ -9,18 +9,20 @@ import java.util.ArrayList;
 public class GameState {
 
 	private int index = 0;
-	private boolean doneGuessing = false;
 	private ArrayList<Champion> champions;
 	private long endTime;
 	private int skips = 0;
 	private long skipPenalty = 0; // Milliseconds
+	
+	public GameState(ArrayList<Champion> champions) {
+		this.champions = champions;
+	}
 	
 	public boolean guessChampion(String guess) {
 		boolean correct = champions.get(index).guessName(guess);
 		if (correct) {
 			index++;
 			if (index == champions.size()) {
-				doneGuessing = true;
 				endTime = System.currentTimeMillis();
 			};
 		}
@@ -32,7 +34,7 @@ public class GameState {
 	}
 
 	public boolean doneGuessing () {
-		return doneGuessing;
+		return index == champions.size();
 	}
 	
 	public long getEndTime(){
