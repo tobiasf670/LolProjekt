@@ -27,10 +27,6 @@ public class Champion {
         this.url = url;
     }
     
-    public String getName(){
-        return name;
-    }
-    
     public String getTitle(){
         return title;
     }
@@ -41,7 +37,6 @@ public class Champion {
     
     public boolean guessName(String userInput){
         return userInput.equalsIgnoreCase(name);
-        
     }
     
 }
