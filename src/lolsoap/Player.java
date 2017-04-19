@@ -5,23 +5,37 @@
  */
 package lolsoap;
 
+import java.util.Set;
+import java.util.UUID;
+
+import brugerautorisation.data.Bruger;
+
 /**
  *
- * @author Magnus
+ * @author Mads Hornbeck
  */
 public class Player {
     
-    String ID;
-    boolean hasWon;
-    int gameID;
+	private Bruger bruger;
+    private Set<UUID> games;
+    private UUID currentGameId;
     
+    public Player(Bruger bruger){
+    	this.bruger = bruger;
+    }
     
-    public Player(String id, int gameID){
-        
-        this.ID = id;
-        hasWon = false;
-        this.gameID = gameID;
-          
-            }
+    public void joinGame(UUID gameId) {
+    	this.currentGameId = gameId;
+    	games.add(gameId);
+    }
+    
+    public UUID getCurrentGame() {
+    	return currentGameId;
+    }
+
+	public Set<UUID> getGames() {
+		return games;
+	}
+
     
 }

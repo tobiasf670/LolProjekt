@@ -7,12 +7,15 @@ package lolsoap;
 
 /**
  *
- * @author Tobias
+ * @author Tobias and Mads Hornbeck
  */
 
 import brugerautorisation.data.Bruger;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
@@ -20,13 +23,20 @@ import javax.jws.WebService;
 @WebService
 public interface LolSOAPI {
     
-        @WebMethod void startGame(int gameID);
-	@WebMethod String getNameOfCham(int gameID);
-        @WebMethod String[] getGameData(int gameID);
-        @WebMethod void reset(int gameID);
-        @WebMethod String joinGame(int gameID, Player p);
-        @WebMethod boolean submitGuess(String guess, Player p);
-        @WebMethod GameInstance[] getGames();
-        @WebMethod Bruger hentBruger(String user, String pass) throws Exception;
+		@WebMethod UUID createNewGame(Player p);
+		@WebMethod Set<UUID> findGames();
+		@WebMethod Set<Player> getPlayers(UUID gameId);
+		@WebMethod void joinGame(UUID gameId, Player p);
+		@WebMethod void startGame(UUID gameId);
+		@WebMethod boolean isGameDone(UUID gameId);
+		@WebMethod boolean didIWin(UUID gameId, Player p);
+		
+		@WebMethod Champion getCurrentChampion(UUID gameId, Player p);
+		
+		@WebMethod boolean guessChampion(UUID gameId, Player p, String guess);
+		
+		@WebMethod void skipChampion(UUID gameId, Player p);
+		
+        @WebMethod Player hentBruger(String user, String pass) throws Exception;
     
 }
