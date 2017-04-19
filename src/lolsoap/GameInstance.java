@@ -9,14 +9,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Iterator;
-<<<<<<< HEAD
 import java.util.Set;
 import java.util.UUID;
 
-=======
 import java.util.logging.Level;
 import java.util.logging.Logger;
->>>>>>> origin/TobiasLeger
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
