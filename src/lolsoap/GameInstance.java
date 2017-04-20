@@ -39,7 +39,7 @@ public class GameInstance {
         private String lolVersion = null;
         private String url = null;
 
-	private Set<Player> players;
+	private HashSet<Player> players;
 	private HashMap<Player, GameState> playerGameStates = new HashMap<>();
 
         

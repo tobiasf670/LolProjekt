@@ -18,19 +18,12 @@ import java.util.HashSet;
 public class Player {
     
 	private Bruger bruger;
-    private Set<UUID> games;
+    private HashSet<UUID> games;
     private UUID currentGameId;
-    String luder = "HAHA GÅR ALDRIG IND I PLAYER";
-    public Player(){
-        
-    }
     
     public Player(Bruger bruger){
         this.games = new HashSet<UUID>();
     	this.bruger = bruger;
-        
-           luder = "HAHAH DEN ER NULL";
-        
         this.currentGameId = null;
     }
     
@@ -47,12 +40,7 @@ public class Player {
 		return games;
 	}
 
-        public String getNavn(){
-            return this.bruger.brugernavn;
-        }
-        
-        public String getBruger(){
-            return luder;
-        }
-    
+    public String getBrugernavn(){
+        return this.bruger.brugernavn;
+    }    
 }

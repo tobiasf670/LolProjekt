@@ -23,22 +23,19 @@ import javax.jws.WebService;
 @WebService
 public interface LolSOAPI {
     
-		@WebMethod UUID createNewGame(Player p);
+		@WebMethod UUID createNewGame(String username);
 		@WebMethod Set<UUID> findGames();
 		@WebMethod Set<Player> getPlayers(UUID gameId);
-		@WebMethod void joinGame(UUID gameId, Player p);
+		@WebMethod void joinGame(UUID gameId, String username);
 		@WebMethod void startGame(UUID gameId);
 		@WebMethod boolean isGameDone(UUID gameId);
-		@WebMethod boolean didIWin(UUID gameId, Player p);
+		@WebMethod boolean didIWin(UUID gameId, String username);
 		
-		@WebMethod Champion getCurrentChampion(UUID gameId, Player p);
+		@WebMethod Champion getCurrentChampion(UUID gameId, String username);
 		
-		@WebMethod boolean guessChampion(UUID gameId, Player p, String guess);
+		@WebMethod boolean guessChampion(UUID gameId, String username, String guess);
 		
-		@WebMethod void skipChampion(UUID gameId, Player p);
+		@WebMethod void skipChampion(UUID gameId, String username);
 		
-        @WebMethod Player hentBruger(String user, String pass) throws Exception;
-        
-         @WebMethod Bruger hentBruger1(String user, String pass) throws Exception;
-    
+        @WebMethod String hentBruger(String user, String pass) throws Exception;    
 }

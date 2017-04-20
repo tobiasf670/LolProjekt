@@ -18,13 +18,15 @@ import javax.jws.WebService;
 public class GameHandler implements LolSOAPI {
 
 	HashMap<UUID, GameInstance> games = new HashMap<UUID, GameInstance>();
+	HashMap<String, Player> players = new HashMap<String, Player>();
 	
 	@Override
-	public synchronized UUID createNewGame(Player p) {
+	public synchronized UUID createNewGame(String username) {
+		// TODO add error handling
+		Player player = players.get(username);
 		GameInstance game = new GameInstance();
 		UUID id = game.getGameId();
-                System.out.println(id);
-		game.addPlayer(p);
+		game.addPlayer(player);
 		games.put(id, game);
 		return id;
 	}
@@ -43,9 +45,10 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public void joinGame(UUID gameId, Player p) {
+	public void joinGame(UUID gameId, String username) {
+		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		game.addPlayer(p);
+		game.addPlayer(player);
 	}
 
 	@Override
@@ -61,45 +64,42 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public boolean didIWin(UUID gameId, Player p) {
+	public boolean didIWin(UUID gameId, String username) {
+		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		return game.hasWon(p);
+		return game.hasWon(player);
 	}
 
 	@Override
-	public Champion getCurrentChampion (UUID gameId, Player p) {
+	public Champion getCurrentChampion (UUID gameId, String username) {
+		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		return  game.getCurrentChampion(p);
+		return  game.getCurrentChampion(player);
 	}
 	
 
 	@Override
-	public boolean guessChampion(UUID gameId, Player p, String guess) {
+	public boolean guessChampion(UUID gameId, String username, String guess) {
+		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		return game.guessChamp(p, guess);
+		return game.guessChamp(player, guess);
 	}
 
 	@Override
-	public void skipChampion(UUID gameId, Player p) {
+	public void skipChampion(UUID gameId, String username) {
+		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		game.skip(p);
+		game.skip(player);
 	}
 
 	@Override
-	public Player hentBruger(String user, String pass) throws Exception {
+	public String hentBruger(String user, String pass) throws Exception {
         Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
         Bruger b = ba.hentBruger(user, pass);
-        Player player = new Player(b);
-        return player;
+        Player player = players.get(b.brugernavn);
+        if (player == null) {
+        	player = new Player(b);
+        }
+        return player.getBrugernavn();
 	}
-        
-        
-        @Override
-	public Bruger hentBruger1(String user, String pass) throws Exception {
-        Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
-        Bruger b = ba.hentBruger(user, pass);
-        return b;
-	}
-	
-
 }
