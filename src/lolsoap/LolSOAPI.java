@@ -31,11 +31,12 @@ public interface LolSOAPI {
 		@WebMethod boolean isGameDone(UUID gameId);
 		@WebMethod boolean didIWin(UUID gameId, String username);
 		
-		@WebMethod Champion getCurrentChampion(UUID gameId, String username);
+		@WebMethod String getChampionImgUrl(UUID gameId, String username);
+		@WebMethod String getChampionTitle(UUID gameId, String username);    
 		
 		@WebMethod boolean guessChampion(UUID gameId, String username, String guess);
 		
 		@WebMethod void skipChampion(UUID gameId, String username);
 		
-        @WebMethod String hentBruger(String user, String pass) throws Exception;    
+        @WebMethod String hentBruger(String user, String pass) throws Exception;
 }

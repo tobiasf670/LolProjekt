@@ -71,10 +71,19 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public Champion getCurrentChampion (UUID gameId, String username) {
+	public String getChampionImgUrl (UUID gameId, String username) {
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		return  game.getCurrentChampion(player);
+		Champion champion = game.getCurrentChampion(player);
+		return  champion.getUrl();
+	}
+	
+	@Override
+	public String getChampionTitle (UUID gameId, String username) {
+		Player player = players.get(username);
+		GameInstance game = games.get(gameId);
+		Champion champion = game.getCurrentChampion(player);
+		return  champion.getTitle();
 	}
 	
 
@@ -99,6 +108,7 @@ public class GameHandler implements LolSOAPI {
         Player player = players.get(b.brugernavn);
         if (player == null) {
         	player = new Player(b);
+        	players
         }
         return player.getBrugernavn();
 	}

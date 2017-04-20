@@ -16,9 +16,9 @@ import org.json.JSONObject;
 public class Champion {
     
    
-   String name;
-   String title;
-   String url;
+   private String name;
+   private String title;
+   private String url;
    
     public Champion(JSONObject obj, String url) throws JSONException{
         
