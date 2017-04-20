@@ -16,20 +16,17 @@ import java.util.HashMap;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-
+;
 @WebService
 public interface LolSOAPI {
     
         @WebMethod void startGame(int gameID);
 	@WebMethod String getNameOfCham(int gameID);
-        @WebMethod String[] renewData(int gameID);
+        @WebMethod String[] getGameData(int gameID);
         @WebMethod void reset(int gameID);
         @WebMethod String joinGame(int gameID, Player p);
         @WebMethod boolean submitGuess(String guess, Player p);
         @WebMethod GameInstance[] getGames();
-        @WebMethod int createGame(Player p);
-        @WebMethod String[] getGameData(int gameID);
-        
         @WebMethod Bruger hentBruger(String user, String pass) throws Exception;
     
 }

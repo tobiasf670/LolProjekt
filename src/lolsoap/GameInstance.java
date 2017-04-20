@@ -34,30 +34,10 @@ public class GameInstance {
         
     }
     
-    
-    
     public void startGame(){
         this.joinable = false;
         
         
-        
-    }
-    
-    public String[] retrieveCurrentGameData(){
-        String [] data = new String[3];
-        if(nameOfChamp == null || lolVersion == null || url == null){
-            renewGameData();
-        }
-        else{
-       
-        data[0] = nameOfChamp;
-        data[1] = lolVersion;
-        data[2] = url;
-        }
-        
-        
-        return data;
-                
         
     }
     
@@ -87,7 +67,7 @@ public class GameInstance {
         this.url = null;
     }
   
-    public String[]  renewGameData() {
+    public String[]  getGameData() {
         String[] data = new String[2];
         Client client = ClientBuilder.newClient();
         Response res = client.target("https://global.api.riotgames.com/api/lol/static-data/EUW"
