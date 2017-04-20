@@ -52,13 +52,17 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public void startGame(UUID gameId) {
+	public void startGame(String username) {
+		Player player = players.get(username);
+		UUID gameId = player.getCurrentGame();
 		GameInstance game = games.get(gameId);
 		game.startGame();
 	}
 	
 	@Override
-	public boolean isGameDone(UUID gameId) {
+	public boolean isGameDone(String username) {
+		Player player = players.get(username);
+		UUID gameId = player.getCurrentGame();
 		GameInstance game = games.get(gameId);
 		return game.isDone();
 	}
@@ -71,16 +75,18 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public String getChampionImgUrl (UUID gameId, String username) {
+	public String getChampionImgUrl(String username) {
 		Player player = players.get(username);
+		UUID gameId = player.getCurrentGame();
 		GameInstance game = games.get(gameId);
 		Champion champion = game.getCurrentChampion(player);
 		return  champion.getUrl();
 	}
 	
 	@Override
-	public String getChampionTitle (UUID gameId, String username) {
+	public String getChampionTitle(String username) {
 		Player player = players.get(username);
+		UUID gameId = player.getCurrentGame();
 		GameInstance game = games.get(gameId);
 		Champion champion = game.getCurrentChampion(player);
 		return  champion.getTitle();
@@ -88,15 +94,17 @@ public class GameHandler implements LolSOAPI {
 	
 
 	@Override
-	public boolean guessChampion(UUID gameId, String username, String guess) {
+	public boolean guessChampion(String username, String guess) {
 		Player player = players.get(username);
+		UUID gameId = player.getCurrentGame();
 		GameInstance game = games.get(gameId);
 		return game.guessChamp(player, guess);
 	}
 
 	@Override
-	public void skipChampion(UUID gameId, String username) {
+	public void skipChampion(String username) {
 		Player player = players.get(username);
+		UUID gameId = player.getCurrentGame();
 		GameInstance game = games.get(gameId);
 		game.skip(player);
 	}
@@ -108,7 +116,7 @@ public class GameHandler implements LolSOAPI {
         Player player = players.get(b.brugernavn);
         if (player == null) {
         	player = new Player(b);
-        	players
+        	players.put(player.getBrugernavn(), player);
         }
         return player.getBrugernavn();
 	}

@@ -27,16 +27,16 @@ public interface LolSOAPI {
 		@WebMethod Set<UUID> findGames();
 		@WebMethod Set<Player> getPlayers(UUID gameId);
 		@WebMethod void joinGame(UUID gameId, String username);
-		@WebMethod void startGame(UUID gameId);
-		@WebMethod boolean isGameDone(UUID gameId);
+		@WebMethod void startGame(String username);
+		@WebMethod boolean isGameDone(String username);
 		@WebMethod boolean didIWin(UUID gameId, String username);
 		
-		@WebMethod String getChampionImgUrl(UUID gameId, String username);
-		@WebMethod String getChampionTitle(UUID gameId, String username);    
+		@WebMethod String getChampionImgUrl(String username);
+		@WebMethod String getChampionTitle(String username);    
 		
-		@WebMethod boolean guessChampion(UUID gameId, String username, String guess);
+		@WebMethod boolean guessChampion(String username, String guess);
 		
-		@WebMethod void skipChampion(UUID gameId, String username);
+		@WebMethod void skipChampion(String username);
 		
         @WebMethod String hentBruger(String user, String pass) throws Exception;
 }
