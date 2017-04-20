@@ -42,11 +42,9 @@ static LolSOAPI spil;
 		LolSOAPI ba = service.getPort(LolSOAPI.class);
                 
                 
-                //Player bruger = ba.hentBruger(user,  pass);
-               
-                Player b = new Player(ba.hentBruger1(user, pass));
-                 System.out.println(b.getBruger());
-		if (b != null){           
+               String bruger = ba.hentBruger(user,  pass);
+              
+		if (bruger != null){           
 			legitUser = true;
 		}
 	
@@ -64,7 +62,7 @@ static LolSOAPI spil;
 	  
 	  while (igen){
 	  try {
-		 igen = spilSpillet(ba, b);
+		 igen = spilSpillet(ba, bruger);
 	} catch (Exception e) {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
@@ -75,19 +73,54 @@ static LolSOAPI spil;
 	  }
     }
 
-    private static boolean spilSpillet(LolSOAPI face,Player p) {
+    private static boolean spilSpillet(LolSOAPI face,String p) {
     spil = face;
+     UUID id = null;
     
-    System.out.println(p.getBruger());
-    spil.createNewGame(p);
+    System.out.println("Vil du starte et ny Spil ?");
+    Scanner scan = new Scanner(System.in);
+    System.out.println("Y = Ja , N = nej");
+	  String svar = scan.next().toLowerCase(); 
+          if(svar.equals("y")){
+               id = spil.createNewGame(p);
+          }
+          else{
+              return false;
+          }
     
-  // System.out.println( spil.createNewGame(p));
-    
-    //List<UUID> list = new ArrayList<UUID>(set);
-    System. out.println("Nyt Spil Startet");
-      
-   //spil.startGame(gg);
+      System. out.println("Nyt Spil Startet");
+      spil.startGame(p);
+     
+      while (!spil.didIWin(id, p)){
+      System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));
    
+      
+      boolean tryAgain= true;
+          do {      
+             
+              String guess = scan.next();
+              if(guess.equals("skip")){
+                  spil.skipChampion(p);
+                  tryAgain = false;
+                  break;
+              }
+              if( spil.guessChampion(p, guess)){
+                  
+                  tryAgain = false;
+    }
+              else {
+                
+                  System.out.println("Forkert, prøv igen.(Hvis du ikke kan gætte det, skriv skip");
+                   System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));
+                  tryAgain = true;
+                  }
+              
+              
+              
+          } while (tryAgain);
+    
+      
+      }
   // Champion kurt = spil.getCurrentChampion(gg, p);
    
    //System.out.println(kurt.getTitle());
