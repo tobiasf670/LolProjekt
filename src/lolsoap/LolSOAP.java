@@ -5,15 +5,7 @@
  */
 package lolsoap;
 
-import java.util.Iterator;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import static javax.ws.rs.client.Entity.json;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import javax.xml.ws.Endpoint;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  *
@@ -26,7 +18,8 @@ public class LolSOAP {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-      LolLogikImpl k = new LolLogikImpl();
+      //LolLogikImpl k = new LolLogikImpl();
+        LolSOAPI k = new GameHandler();
 		Endpoint.publish("http://[::]:9901/LolSOAP", k);
 		
 		System.out.println("Kontotjeneste registreret.");

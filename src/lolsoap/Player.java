@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import brugerautorisation.data.Bruger;
+import java.util.HashSet;
 
 /**
  *
@@ -19,9 +20,18 @@ public class Player {
 	private Bruger bruger;
     private Set<UUID> games;
     private UUID currentGameId;
+    String luder = "HAHA GÅR ALDRIG IND I PLAYER";
+    public Player(){
+        
+    }
     
     public Player(Bruger bruger){
+        this.games = new HashSet<UUID>();
     	this.bruger = bruger;
+        
+           luder = "HAHAH DEN ER NULL";
+        
+        this.currentGameId = null;
     }
     
     public void joinGame(UUID gameId) {
@@ -37,5 +47,12 @@ public class Player {
 		return games;
 	}
 
+        public String getNavn(){
+            return this.bruger.brugernavn;
+        }
+        
+        public String getBruger(){
+            return luder;
+        }
     
 }

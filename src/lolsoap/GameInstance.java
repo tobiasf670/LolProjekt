@@ -7,6 +7,7 @@ package lolsoap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
@@ -35,11 +36,17 @@ public class GameInstance {
 	private long startTime;
 	private Player winner = null;
 	private ArrayList<Champion> championArray;
+        private String lolVersion = null;
+        private String url = null;
 
 	private Set<Player> players;
 	private HashMap<Player, GameState> playerGameStates = new HashMap<>();
 
+        
+        
 	public GameInstance() {
+        this.players = new HashSet<Player>();
+            
 		// This creates a UUID which is a semi-random identifier of 128 bits;
 		// read more here : https://en.wikipedia.org/wiki/Universally_unique_identifier.
         id = UUID.randomUUID();

@@ -19,7 +19,7 @@ import java.util.UUID;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-;
+
 @WebService
 public interface LolSOAPI {
     
@@ -38,5 +38,7 @@ public interface LolSOAPI {
 		@WebMethod void skipChampion(UUID gameId, Player p);
 		
         @WebMethod Player hentBruger(String user, String pass) throws Exception;
+        
+         @WebMethod Bruger hentBruger1(String user, String pass) throws Exception;
     
 }

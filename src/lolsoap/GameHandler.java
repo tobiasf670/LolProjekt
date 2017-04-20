@@ -7,13 +7,14 @@ import java.util.UUID;
 
 import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
+import javax.jws.WebService;
 
 /*
  * This class holds all the instances of different games and lets players create or join a game.
  *  
  * @author Mads Hornbeck
  */
-
+@WebService(endpointInterface = "lolsoap.LolSOAPI")
 public class GameHandler implements LolSOAPI {
 
 	HashMap<UUID, GameInstance> games = new HashMap<UUID, GameInstance>();
@@ -22,6 +23,7 @@ public class GameHandler implements LolSOAPI {
 	public synchronized UUID createNewGame(Player p) {
 		GameInstance game = new GameInstance();
 		UUID id = game.getGameId();
+                System.out.println(id);
 		game.addPlayer(p);
 		games.put(id, game);
 		return id;
@@ -89,6 +91,14 @@ public class GameHandler implements LolSOAPI {
         Bruger b = ba.hentBruger(user, pass);
         Player player = new Player(b);
         return player;
+	}
+        
+        
+        @Override
+	public Bruger hentBruger1(String user, String pass) throws Exception {
+        Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+        Bruger b = ba.hentBruger(user, pass);
+        return b;
 	}
 	
 
