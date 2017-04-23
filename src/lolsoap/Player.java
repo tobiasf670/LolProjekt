@@ -17,7 +17,7 @@ import java.util.HashSet;
  */
 public class Player {
     
-	private Bruger bruger;
+    private Bruger bruger;
     private HashSet<UUID> games;
     private UUID currentGameId;
     
@@ -27,6 +27,8 @@ public class Player {
         this.currentGameId = null;
     }
     
+    public Player(){};
+    
     public void joinGame(UUID gameId) {
     	this.currentGameId = gameId;
     	games.add(gameId);
@@ -34,6 +36,10 @@ public class Player {
     
     public UUID getCurrentGame() {
     	return currentGameId;
+    }
+    
+    public void setCurrentGame(UUID gamid) {
+    	this.currentGameId = gamid;
     }
 
 	public Set<UUID> getGames() {

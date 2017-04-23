@@ -9,6 +9,7 @@ import brugerautorisation.data.Bruger;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.UUID;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -26,11 +27,11 @@ static LolSOAPI spil;
         // TODO code application logic 
         
         System.out.println("Velkommen til LOLQUIZ");
-	  Scanner scan = new Scanner(System.in);
+	  //Scanner scan = new Scanner(System.in);
 	  System.out.println("Indtast Brugernavn");
-	  String user = scan.next();
-	  System.out.println("Indtast password!");
-	  String pass = scan.next();
+	  String user = "s153086";
+	  //System.out.println("Indtast password!");
+	  String pass = "nusnus";
 	  
 	  boolean legitUser = false;
 	  
@@ -83,13 +84,30 @@ static LolSOAPI spil;
 	  String svar = scan.next().toLowerCase(); 
           if(svar.equals("y")){
                id = spil.createNewGame(p);
+               System.out.println("Game ID for dit nye spil er " + id);
+                       
           }
           else{
               return false;
           }
     
       System. out.println("Nyt Spil Startet");
+      spil.hentBruger("s153391", "kodetyv");
+      
+      spil.joinGame(id, "s153391");
       spil.startGame(p);
+      Set<Player> players = spil.getPlayers(id);
+      if(players.size() > 0){
+          
+        Player tempP = players.iterator().next();
+          System.out.println(players.size());
+          if (tempP != null){
+              
+              System.out.println("han er til at finde");
+              System.out.println(tempP.getCurrentGame());
+          }
+          
+      }
      
       while (!spil.didIWin(id, p)){
       System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));

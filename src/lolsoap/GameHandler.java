@@ -47,6 +47,7 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public void joinGame(UUID gameId, String username) {
 		Player player = players.get(username);
+                player.setCurrentGame(gameId);
 		GameInstance game = games.get(gameId);
 		game.addPlayer(player);
 	}
@@ -110,9 +111,14 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public String hentBruger(String user, String pass) throws Exception {
-        Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
-        Bruger b = ba.hentBruger(user, pass);
+	public String hentBruger(String user, String pass){
+            Bruger b = null;
+            try {
+                Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+                b = ba.hentBruger(user, pass);
+            } catch (Exception e) {
+            }
+        
         Player player = players.get(b.brugernavn);
         if (player == null) {
         	player = new Player(b);
