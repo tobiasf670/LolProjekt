@@ -72,8 +72,11 @@ public class GameInstance {
     	GameState gameState = playerGameStates.get(p);
     	if (gameState.guessChampion(guess)) {
     		// TODO we need to figure out when the player knows the game is over.
-    		if (gameState.doneGuessing() && winner == null) {
-    			winner = p;
+    		if (gameState.doneGuessing()) {
+    			p.endGame();
+    			if (winner == null) {
+        			winner = p;	
+    			}
     		}
     		return true;
     	}

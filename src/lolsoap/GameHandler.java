@@ -27,11 +27,14 @@ public class GameHandler implements LolSOAPI {
 	public synchronized UUID createNewGame(String username) {
 		// TODO add error handling
 		Player player = players.get(username);
-		GameInstance game = new GameInstance();
-		UUID id = game.getGameId();
-		game.addPlayer(player);
-		games.put(id, game);
-		return id;
+		if (player != null) {
+			GameInstance game = new GameInstance();
+			UUID id = game.getGameId();
+			game.addPlayer(player);
+			games.put(id, game);
+			return id;
+		}
+		return null;
 	}
 	
 	@Override
@@ -57,16 +60,14 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public void startGame(String username) {
 		Player player = players.get(username);
-		UUID gameId = player.getCurrentGame();
-		GameInstance game = games.get(gameId);
+		GameInstance game = getGame(player);
 		game.startGame();
 	}
 	
 	@Override
 	public boolean isGameDone(String username) {
 		Player player = players.get(username);
-		UUID gameId = player.getCurrentGame();
-		GameInstance game = games.get(gameId);
+		GameInstance game = getGame(player);
 		return game.isDone();
 	}
 
@@ -80,36 +81,44 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public String getChampionImgUrl(String username) {
 		Player player = players.get(username);
-		UUID gameId = player.getCurrentGame();
-		GameInstance game = games.get(gameId);
-		Champion champion = game.getCurrentChampion(player);
-		return  champion.getUrl();
+		GameInstance game = getGame(player);
+		if (player != null && game != null) {
+			Champion champion = game.getCurrentChampion(player);
+			return  champion.getUrl();
+		}
+		return "Error";
 	}
 	
 	@Override
 	public String getChampionTitle(String username) {
 		Player player = players.get(username);
-		UUID gameId = player.getCurrentGame();
-		GameInstance game = games.get(gameId);
-		Champion champion = game.getCurrentChampion(player);
-		return  champion.getTitle();
+		GameInstance game = getGame(player);
+		if (player != null && game != null) {
+			Champion champion = game.getCurrentChampion(player);
+			return  champion.getTitle();
+		}
+		// TODO real error message.
+		return "Error";
 	}
 	
 
 	@Override
 	public boolean guessChampion(String username, String guess) {
 		Player player = players.get(username);
-		UUID gameId = player.getCurrentGame();
-		GameInstance game = games.get(gameId);
-		return game.guessChamp(player, guess);
+		GameInstance game = getGame(player);
+		if (player != null && game != null) {
+			return game.guessChamp(player, guess);
+		}
+		return false;
 	}
 
 	@Override
 	public void skipChampion(String username) {
 		Player player = players.get(username);
-		UUID gameId = player.getCurrentGame();
-		GameInstance game = games.get(gameId);
-		game.skip(player);
+		GameInstance game = getGame(player);
+		if (player != null && game != null) {
+			game.skip(player);			
+		}
 	}
 
 	@Override
@@ -129,5 +138,16 @@ public class GameHandler implements LolSOAPI {
 			e.printStackTrace();
 		}
 		return "Connection Error to javabog.dk";
+	}
+	
+	private GameInstance getGame(Player player){
+		GameInstance game = null;
+		if (player != null) {
+			UUID gameId = player.getCurrentGame();
+			if (gameId != null) {
+				game = games.get(gameId);
+			}
+		}
+		return game;
 	}
 }

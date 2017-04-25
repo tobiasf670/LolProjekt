@@ -42,5 +42,9 @@ public class Player {
 
     public String getBrugernavn(){
         return this.bruger.brugernavn;
-    }    
+    }
+    
+    public void endGame() {
+    	this.currentGameId = null;
+    }
 }
