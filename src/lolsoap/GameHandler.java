@@ -1,6 +1,9 @@
 package lolsoap;
 
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
@@ -110,14 +113,21 @@ public class GameHandler implements LolSOAPI {
 	}
 
 	@Override
-	public String hentBruger(String user, String pass) throws Exception {
-        Brugeradmin ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
-        Bruger b = ba.hentBruger(user, pass);
-        Player player = players.get(b.brugernavn);
-        if (player == null) {
-        	player = new Player(b);
-        	players.put(player.getBrugernavn(), player);
-        }
-        return player.getBrugernavn();
+	public String hentBruger(String user, String pass) {
+        Brugeradmin ba;
+		try {
+			ba = (Brugeradmin) Naming.lookup("rmi://javabog.dk/brugeradmin");
+			Bruger b = ba.hentBruger(user, pass);
+	        Player player = players.get(b.brugernavn);
+	        if (player == null) {
+	        	player = new Player(b);
+	        	players.put(player.getBrugernavn(), player);
+	        }
+	        return player.getBrugernavn();
+		} catch (MalformedURLException | RemoteException | NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "Connection Error to javabog.dk";
 	}
 }
