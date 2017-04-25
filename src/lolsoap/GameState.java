@@ -22,7 +22,7 @@ public class GameState {
 		boolean correct = champions.get(index).guessName(guess);
 		if (correct) {
 			index++;
-			if (index == champions.size()) {
+			if (index == champions.size() - 1) {
 				endTime = System.currentTimeMillis();
 			};
 		}
@@ -34,7 +34,7 @@ public class GameState {
 	}
 
 	public boolean doneGuessing () {
-		return index == champions.size();
+		return index == champions.size() - 1;
 	}
 	
 	public long getEndTime(){
@@ -42,7 +42,7 @@ public class GameState {
 	}
 	
 	public void skip() {
-		if (index == champions.size()) {
+		if (index == champions.size() - 1) {
 			endTime = System.currentTimeMillis();
 		}
 		else {
