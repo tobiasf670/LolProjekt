@@ -22,7 +22,7 @@ public interface LolSOAPI {
     
 		@WebMethod UUID createNewGame(String username);
 		@WebMethod Set<UUID> findGames();
-		@WebMethod Set<Player> getPlayers(UUID gameId);
+		@WebMethod Set<String> getUsernames(UUID gameId);
 		@WebMethod void joinGame(UUID gameId, String username);
 		@WebMethod void startGame(String username);
 		@WebMethod boolean isGameDone(String username);

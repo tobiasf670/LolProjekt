@@ -89,8 +89,12 @@ public class GameInstance {
 		return p.equals(winner);
 	}
 	
-	public Set<Player> getPlayers(){
-		return players;
+	public Set<String> getUsernames(){
+		HashSet<String> userNames = new HashSet<>();
+		for (Player play : players) {
+			userNames.add(play.getBrugernavn());
+		}
+		return userNames;
 	}
 	
 	public void skip(Player p) {
