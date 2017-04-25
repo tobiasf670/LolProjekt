@@ -21,7 +21,7 @@ import javax.jws.WebService;
 public interface LolSOAPI {
     
 		@WebMethod UUID createNewGame(String username);
-		@WebMethod Set<UUID> findGames();
+		@WebMethod UUID[] findGames();
 		@WebMethod Set<String> getUsernames(UUID gameId);
 		@WebMethod void joinGame(UUID gameId, String username);
 		@WebMethod void startGame(String username);

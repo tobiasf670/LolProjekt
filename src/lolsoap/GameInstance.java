@@ -69,7 +69,6 @@ public class GameInstance {
     }
     
     public boolean guessChamp(Player p, String guess){
-    	
     	GameState gameState = playerGameStates.get(p);
     	if (gameState.guessChampion(guess)) {
     		// TODO we need to figure out when the player knows the game is over.
