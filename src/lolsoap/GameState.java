@@ -21,10 +21,12 @@ public class GameState {
 	public boolean guessChampion(String guess) {
 		boolean correct = champions.get(index).guessName(guess);
 		if (correct) {
-			index++;
 			if (index == champions.size() - 1) {
 				endTime = System.currentTimeMillis();
-			};
+			}
+			else {
+				index++;
+			}
 		}
 		return correct;
 	}
