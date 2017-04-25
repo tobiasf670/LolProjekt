@@ -38,9 +38,9 @@ public class GameHandler implements LolSOAPI {
 	}
 	
 	@Override
-	public Set<Player> getPlayers(UUID gameId) {
+	public Set<String> getUsernames(UUID gameId) {
 		GameInstance game = games.get(gameId);
-		Set<Player> players = game.getPlayers();
+		Set<String> players = game.getPlayers();
 		return players;
 	}
 
