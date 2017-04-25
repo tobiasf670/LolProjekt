@@ -77,6 +77,12 @@ public class GameHandler implements LolSOAPI {
 		GameInstance game = games.get(gameId);
 		return game.hasWon(player);
 	}
+	
+	@Override
+	public String getWinner(UUID gameId) {
+		GameInstance game = games.get(gameId);
+		return game.getWinner();
+	}
 
 	@Override
 	public String getChampionImgUrl(String username) {

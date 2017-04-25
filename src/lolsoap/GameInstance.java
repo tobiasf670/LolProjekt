@@ -92,6 +92,13 @@ public class GameInstance {
 		return p.equals(winner);
 	}
 	
+	public String getWinner() {
+		if (winner != null) {
+			return winner.getBrugernavn();
+		}
+		return null;
+	}
+	
 	public Set<String> getUsernames(){
 		HashSet<String> userNames = new HashSet<>();
 		for (Player play : players) {
