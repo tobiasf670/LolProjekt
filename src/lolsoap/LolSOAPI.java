@@ -35,5 +35,5 @@ public interface LolSOAPI {
 		
 		@WebMethod void skipChampion(String username);
 		
-        @WebMethod String hentBruger(String user, String pass) throws Exception;
+        @WebMethod String hentBruger(String user, String pass);
 }
