@@ -36,8 +36,6 @@ public class GameInstance {
 	private long startTime;
 	private Player winner = null;
 	private ArrayList<Champion> championArray;
-        private String lolVersion = null;
-        private String url = null;
 
 	private HashSet<Player> players;
 	private HashMap<Player, GameState> playerGameStates = new HashMap<>();
@@ -118,6 +116,8 @@ public class GameInstance {
 	 */
 	
     private ArrayList<Champion> makeChampionArray(){    
+        String lolVersion = null;
+        String url = null;
         JSONArray jsonArray = null ;
         Client client = ClientBuilder.newClient();
         Response res = client.target("https://global.api.riotgames.com/api/lol/static-data/EUW"

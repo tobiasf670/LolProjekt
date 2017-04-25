@@ -42,7 +42,12 @@ public class GameState {
 	}
 	
 	public void skip() {
-		index++;
+		if (index == champions.size()) {
+			endTime = System.currentTimeMillis();
+		}
+		else {
+			index++;	
+		}
 		skips++;
 	}
 }

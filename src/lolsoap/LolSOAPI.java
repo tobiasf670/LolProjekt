@@ -10,9 +10,6 @@ package lolsoap;
  * @author Tobias and Mads Hornbeck
  */
 
-import brugerautorisation.data.Bruger;
-import java.awt.image.BufferedImage;
-import java.util.HashMap;
 import java.util.Set;
 import java.util.UUID;
 
