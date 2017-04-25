@@ -68,7 +68,7 @@ public class GameHandler implements LolSOAPI {
 	public boolean isGameDone(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		return game.isDone();
+		return game.isDone(player);
 	}
 
 	@Override

@@ -83,8 +83,9 @@ public class GameInstance {
         return false;
     }
 
-	public boolean isDone() {
-		return winner != null;
+	public boolean isDone(Player p) {
+		GameState gameState = playerGameStates.get(p);
+		return gameState.doneGuessing();
 	}
 
 	public boolean hasWon(Player p) {
