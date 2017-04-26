@@ -35,6 +35,7 @@ public class LolSOAPImplTest{
     
     
      static LolSoapImplementation soapHandlerService;
+     private Gson gsonConverter;
      
       @Context
     private UriInfo context;
@@ -42,6 +43,7 @@ public class LolSOAPImplTest{
          public LolSOAPImplTest() {
   
                 soapHandlerService = new LolSoapImplementation();
+                gsonConverter = new Gson();
                 
                
     }
@@ -58,19 +60,10 @@ public class LolSOAPImplTest{
     @Produces(MediaType.APPLICATION_JSON)
     public String findGames() {
         UUID[] uuids = soapHandlerService.soapHandler.findGames(); 
-        uuids[0].toString();
-        Gson g = new Gson();
-        String jsonArray = g.toJson(uuids);
-        JSONObject jsonObj = new JSONObject();
         
-        try {
-            
-                   for (int i = 0; i < uuids.length; i++) {
-                       jsonObj.put("game: " +i, uuids[i]);
-            }
-    
-        } catch (Exception e) {
-        }
+       
+        String jsonArray = gsonConverter.toJson(uuids);
+   
         System.out.println("Array er : " + uuids.length + " langt");
          return jsonArray;
     }
