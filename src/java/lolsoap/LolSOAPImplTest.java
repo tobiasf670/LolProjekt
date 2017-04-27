@@ -1,4 +1,4 @@
-/*
+    /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -122,13 +122,13 @@ public class LolSOAPImplTest{
     }
 
    @POST
-   @Path("/skip")
+   @Path("/skip/{username}")
    @Consumes(MediaType.TEXT_PLAIN)
-    public void skipChampion(String username) {
+    public void skipChampion(@PathParam("username") String username) {
           soapHandlerService.soapHandler.skipChampion(username);
     }
     
-    @POST
+    @GET
     @Path("/hentbruger/{username}/{password}")
     @Produces(MediaType.TEXT_PLAIN)
     public String hentBruger(@PathParam("username") String username, @PathParam("password") String pass) {
