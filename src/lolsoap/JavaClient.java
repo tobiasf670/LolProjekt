@@ -5,13 +5,9 @@
  */
 package lolsoap;
 
-import brugerautorisation.data.Bruger;
-import com.sun.prism.shader.FillPgram_Color_Loader;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.UUID;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -186,11 +182,11 @@ static LolSOAPI spil;
     }
     
     
-    public static  void startGame(String p, UUID id, Scanner scan){
+    public static  String startGame(String p, UUID id, Scanner scan){
         spil.startGame(p);  
              
-             
-             while (!spil.didIWin(id, p)){
+             while(!spil.isGameDone(p)){
+         System.out.println(spil.isGameDone(p));
         System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));
    
       
@@ -198,9 +194,10 @@ static LolSOAPI spil;
       boolean tryAgain= true;
           do {      
              
-              String guess = scan.next();
+              //String guess = scan.next();
+                String guess = "skip";
               if(guess.equals("done")){
-                  return;
+                  return "";
               }
               if(guess.equals("skip")){
                   spil.skipChampion(p);
@@ -223,6 +220,14 @@ static LolSOAPI spil;
               
               
           } while (tryAgain);
+          
+          
     }
+             System.out.println("FØR IF og ID ER"+id);
+        if(spil.isGameDone(p)){
+            System.out.println("Efter IF og ID ER"+id);
+            System.out.println("Vinderen er : " + spil.getWinner(id));
+        }
+        return spil.getWinner(id);
 }
 }
