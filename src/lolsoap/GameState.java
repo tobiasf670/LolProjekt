@@ -20,15 +20,11 @@ public class GameState {
 	}
 	
 	public boolean guessChampion(String guess) {
-		boolean correct = false;
-		if (index < champions.size()) {
-			correct = champions.get(index).guessName(guess);	
-		}
-		
-		if (correct) {
+		if (index < champions.size() && champions.get(index).guessName(guess)) {
 			increaseIndex();
+			return true;
 		}
-		return correct;
+		return false;
 	}
 	
 	public Champion getCurrentChampion() {
@@ -50,21 +46,15 @@ public class GameState {
 	}
 	
 	private void increaseIndex(){
-		// Also checks if the game is done.
 		int championCount = champions.size();
 		
 		if (index < championCount - 1){
 			index++;	
 		}
-		
-		if (index >= championCount) {
-			if (!gameDone){
-				endTime = System.currentTimeMillis();
-				gameDone = true;
-			}
-			else {
-				// do nothing
-			}
+		// Also checks if the game is done.
+		if (!gameDone && index >= championCount) {
+			endTime = System.currentTimeMillis();
+			gameDone = true;
 		}
 	}
 }
