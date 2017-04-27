@@ -52,6 +52,11 @@ public class GameState {
 	private void increaseIndex(){
 		// Also checks if the game is done.
 		int championCount = champions.size();
+		
+		if (index < championCount - 1){
+			index++;	
+		}
+		
 		if (index >= championCount) {
 			if (!gameDone){
 				endTime = System.currentTimeMillis();
@@ -60,9 +65,6 @@ public class GameState {
 			else {
 				// do nothing
 			}
-		}
-		else if (index < championCount - 1){
-			index++;	
 		}
 	}
 }
