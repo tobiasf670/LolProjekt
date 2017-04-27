@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lolresource;
+package lolsoap;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
@@ -29,8 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(lolresource.LolSOAPImplTest.class);
-        resources.add(lolresource.LolSOAPResource.class);
+        resources.add(lolsoap.LolSOAPImplTest.class);
+        resources.add(lolsoap.LolSOAPResource.class);
     }
     
 }

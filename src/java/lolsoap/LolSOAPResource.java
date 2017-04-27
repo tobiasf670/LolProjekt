@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lolresource;
+package lolsoap;
 
 import brugerautorisation.data.Bruger;
 import java.net.MalformedURLException;

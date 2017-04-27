@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lolresource;
+package lolsoap;
 import brugerautorisation.data.Bruger;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -71,8 +71,11 @@ public class LolSOAPImplTest{
    @GET
    @Path("/getplayers/{gameID}")
    @Produces(MediaType.APPLICATION_JSON)
-    public Set<String> getUsernames(@PathParam("gameID") UUID gameId) {
-        return soapHandlerService.soapHandler.getUsernames(gameId);
+    public String getUsernames(@PathParam("gameID") UUID gameId) {
+        Set<String> names = soapHandlerService.soapHandler.getUsernames(gameId);
+        String[] nameArray =(String[]) names.toArray();
+        String result = gsonConverter.toJson(nameArray);
+        return result;
     }
 
     @GET

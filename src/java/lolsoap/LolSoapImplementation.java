@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lolresource;
+package lolsoap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -26,7 +26,7 @@ public class LolSoapImplementation {
     public LolSoapImplementation(){
         
           try {
-             url = new URL("http://localhost:9901/LolSOAP?wsdl");
+             url = new URL("http://ec2-35-165-42-120.us-west-2.compute.amazonaws.com:9901/LolSOAP?wsdl");
         } catch (MalformedURLException e) {
         }
 
