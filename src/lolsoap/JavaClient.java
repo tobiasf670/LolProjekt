@@ -121,9 +121,7 @@ static LolSOAPI spil;
            valg = scan.nextInt();
       } catch (InputMismatchException e) {
               System.out.println("");
-              System.out.println("Det er kun muligt at skrive til fra 1-4");
-              System.out.println("");
-
+              System.out.println("\u001B[31m" + "Det er kun muligt at skrive til fra 1-4" + "\u001B[0m");
       }
         
       switch(valg){
