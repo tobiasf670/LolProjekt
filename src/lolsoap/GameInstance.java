@@ -124,6 +124,21 @@ public class GameInstance {
 			}
 		}
 	}
+	
+	public String getSerializedGame() {
+		if (winner != null) {
+			GameState gameState = playerGameStates.get(winner);
+			String info =
+					id.toString() + " " 
+				+ winner.getBrugernavn() + " "
+				// TODO add champion count
+				+ gameState.getScore() + " "
+				+ gameState.getEndTime();
+			return info;
+		}
+		return "";
+		
+	}
 
 	/*
 	 * Queries the lol api and creates a ArrayList of the champions from JSON.

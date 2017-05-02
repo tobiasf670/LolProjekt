@@ -12,23 +12,31 @@ public class GameState {
 	private ArrayList<Champion> champions;
 	private boolean gameDone = false;
 	private long endTime;
+	private int championCount = 20;
 	private int skips = 0;
 	private long skipPenalty = 0; // Milliseconds
+	private int score = 0;
 	
 	public GameState(ArrayList<Champion> champions) {
 		this.champions = champions;
 	}
 	
+	public void setNumberOfChampions(int i) {
+		if (champions.size() > i) {
+			championCount = i;
+		}
+	}
+	
 	public boolean guessChampion(String guess) {
 		if (index < champions.size() && getCurrentChampion().guessName(guess)) {
-			increaseIndex();
+			score++;
 			return true;
 		}
+		increaseIndex();
 		return false;
 	}
 	
 	public Champion getCurrentChampion() {
-		int championCount = champions.size();
 		if (index < championCount) {
 			return champions.get(index);
 		}
@@ -40,7 +48,14 @@ public class GameState {
 	}
 	
 	public long getEndTime(){
-		return endTime + skips * skipPenalty;
+		if (gameDone) {
+			return endTime + skips * skipPenalty;
+		}
+		return 0;
+	}
+	
+	public int getScore() {
+		return score;
 	}
 	
 	public void skip() {
@@ -49,8 +64,6 @@ public class GameState {
 	}
 	
 	private void increaseIndex(){
-		int championCount = champions.size();
-		
 		if (index < championCount){
 			index++;	
 		}

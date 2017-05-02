@@ -17,11 +17,13 @@ import java.util.HashSet;
  */
 public class Player {
     
+	private UUID id;
 	private Bruger bruger;
-    private HashSet<UUID> games;
     private UUID currentGameId;
+    private HashSet<UUID> games;
     
     public Player(Bruger bruger){
+        this.id = UUID.randomUUID();
         this.games = new HashSet<UUID>();
     	this.bruger = bruger;
         this.currentGameId = null;
