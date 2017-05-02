@@ -7,6 +7,7 @@ package lolsoap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
 import javax.xml.namespace.QName;
@@ -89,6 +90,7 @@ static LolSOAPI spil;
     
       //System. out.println("Nyt Spil Startet");
      // spil.startGame(p);
+     int valg = 0;
      
      while(true){
      Scanner scan = new Scanner(System.in);
@@ -103,7 +105,13 @@ static LolSOAPI spil;
         System.out.println("*********************************");
         System.out.println();
         System.out.print("Dit valg : ");
-      int valg = scan.nextInt();
+     
+      try {
+           valg = scan.nextInt();
+      } catch (InputMismatchException e) {
+              System.out.println("Not possible");
+      }
+        
       switch(valg){
           case 1: 
               
