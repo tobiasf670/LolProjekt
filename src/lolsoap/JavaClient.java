@@ -40,9 +40,16 @@ static LolSOAPI spil;
 	  QName qname = new QName("http://lolsoap/", "GameHandlerService");
 	  Service service = Service.create(url, qname);
 		LolSOAPI ba = service.getPort(LolSOAPI.class);
+                String bruger = null;
                 
                 
-               String bruger = ba.hentBruger(user,  pass);
+             try {
+		  bruger = ba.hentBruger(user,  pass);
+	} catch (Exception e) {
+		// TODO Auto-generated catch block
+		
+	}     
+               
               
 		if (bruger != null){           
 			legitUser = true;
@@ -56,10 +63,12 @@ static LolSOAPI spil;
 	  }
 	  else{
 		  System.out.println("Login fejlet");
-		  
+		 legitUser = false;
 	  }
          boolean igen = true;
-	  
+	  if (legitUser){
+              
+          
 	  while (igen){
 	  try {
 		 igen = spilSpillet(ba, bruger);
@@ -68,7 +77,7 @@ static LolSOAPI spil;
 		e.printStackTrace();
 	}
 	  
-          
+          }
 	  
 	  }
     }
@@ -89,7 +98,8 @@ static LolSOAPI spil;
 //          }
     
       //System. out.println("Nyt Spil Startet");
-     // spil.startGame(p);
+      
+     // Valg variablen som styrer spillet.
      int valg = 0;
      
      while(true){
@@ -106,10 +116,14 @@ static LolSOAPI spil;
         System.out.println();
         System.out.print("Dit valg : ");
      
+      //
       try {
            valg = scan.nextInt();
       } catch (InputMismatchException e) {
-              System.out.println("Not possible");
+              System.out.println("");
+              System.out.println("Det er kun muligt at skrive til fra 1-4");
+              System.out.println("");
+
       }
         
       switch(valg){
