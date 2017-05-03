@@ -10,7 +10,6 @@ package lolsoap;
  * @author Tobias and Mads Hornbeck
  */
 
-import java.util.Set;
 import java.util.UUID;
 
 import javax.jws.WebMethod;
@@ -22,12 +21,15 @@ public interface LolSOAPI {
     
 		@WebMethod UUID createNewGame(String username);
 		@WebMethod UUID[] findGames();
-		@WebMethod Set<String> getUsernames(UUID gameId);
+		@WebMethod String[] getUsernames(UUID gameId);
+		@WebMethod UUID[] getPlayersGames(String username);
+
 		@WebMethod void joinGame(UUID gameId, String username);
 		@WebMethod void startGame(String username);
+        @WebMethod boolean isGameStarted(String username);
 		@WebMethod boolean isGameDone(String username);
 		@WebMethod boolean didIWin(UUID gameId, String username);
-                @WebMethod String getWinner(UUID gameId);
+        @WebMethod String getWinner(UUID gameId);
         
 		@WebMethod String getChampionImgUrl(String username);
 		@WebMethod String getChampionTitle(String username);    

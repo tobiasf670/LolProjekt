@@ -42,7 +42,7 @@ public class GameInstance {
 
 	public GameInstance() {
 		this.players = new HashSet<Player>();
-
+		
 		// This creates a UUID which is a semi-random identifier of 128 bits;
 		// read more here :
 		// https://en.wikipedia.org/wiki/Universally_unique_identifier.
@@ -71,13 +71,21 @@ public class GameInstance {
 		GameState gameState = playerGameStates.get(p);
 		boolean correct = gameState.guessChampion(guess);
 		// TODO we need to figure out when the player knows the game is over.
-		setWinnerIfDone(gameState, p);
+		checkIfDone(gameState, p);
 		return correct;
 	}
 
-	public boolean isDone(Player p) {
+	public boolean playerIsDone(Player p) {
 		GameState gameState = playerGameStates.get(p);
 		return gameState.gameDone();
+	}
+	
+	public boolean gameIsDone() {
+		return winner == null;
+	}
+	
+	public boolean isGameStarted() {
+		return gameStarted;
 	}
 
 	public boolean hasWon(Player p) {
@@ -91,17 +99,17 @@ public class GameInstance {
 		return null;
 	}
 
-	public Set<String> getUsernames() {
+	public String[] getUsernames() {
 		HashSet<String> userNames = new HashSet<>();
 		for (Player play : players) {
 			userNames.add(play.getBrugernavn());
 		}
-		return userNames;
+		return userNames.toArray(new String[userNames.size()]);
 	}
 
 	public void skip(Player p) {
 		GameState gameState = playerGameStates.get(p);
-		setWinnerIfDone(gameState, p);
+		checkIfDone(gameState, p);
 		gameState.skip();
 	}
 
@@ -115,12 +123,28 @@ public class GameInstance {
 		return gameState.getEndTime() - startTime;
 	}
 	
-	private void setWinnerIfDone(GameState gameState, Player p) {
-		// TODO maybe we need to set winner only after all players are done or have quit.
-		if (gameState.gameDone()) {
+	private void checkIfDone(GameState gameState, Player p) {
+		if(gameState.gameDone()) {
 			p.endGame();
+			setWinner();
+		}
+	}
+	
+	private void setWinner() {
+		boolean allDone = true;
+		int maxScoreSofar = 0;
+		Player prospectiveWinner = null;
+		for (Player p : players) {
+			GameState gameState = playerGameStates.get(p);
+			allDone &= gameState.gameDone();
+			if (allDone && gameState.getScore() > maxScoreSofar){
+				maxScoreSofar = gameState.getScore();
+				prospectiveWinner = p;
+			}
+		}
+		if (allDone) {
 			if (winner == null) {
-				winner = p;
+				winner = prospectiveWinner;
 			}
 		}
 	}
@@ -133,11 +157,10 @@ public class GameInstance {
 				+ winner.getBrugernavn() + " "
 				// TODO add champion count
 				+ gameState.getScore() + " "
-				+ gameState.getEndTime();
+				+ gameState.getEndTime() + "\n";
 			return info;
 		}
 		return "";
-		
 	}
 
 	/*

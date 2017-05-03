@@ -45,14 +45,14 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public UUID[] findGames() {
 		Set<UUID> keys = games.keySet();
-                SaveHighScore();
+//                SaveHighScore();
 		return keys.toArray(new UUID[0]);
 	}
 	
 	@Override
-	public Set<String> getUsernames(UUID gameId) {
+	public String[] getUsernames(UUID gameId) {
 		GameInstance game = games.get(gameId);
-		Set<String> players = game.getUsernames();
+		String[] players = game.getUsernames();
 		return players;
 	}
 
@@ -61,6 +61,13 @@ public class GameHandler implements LolSOAPI {
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
 		game.addPlayer(player);
+	}
+	
+	@Override
+	public UUID[] getPlayersGames(String username) {
+		Player player = players.get(username);
+		Set<UUID> gamesSet = player.getGames();
+		return gamesSet.toArray(new UUID[0]);
 	}
 
 	@Override
@@ -71,10 +78,17 @@ public class GameHandler implements LolSOAPI {
 	}
 	
 	@Override
+	public boolean isGameStarted(String username) {
+		Player player = players.get(username);
+		GameInstance game = getGame(player);
+		return game.isGameStarted();
+	}
+	
+	@Override
 	public boolean isGameDone(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		return game.isDone(player);
+		return game.playerIsDone(player);
 	}
 
 	@Override
@@ -200,7 +214,7 @@ public class GameHandler implements LolSOAPI {
             
             try {
                 
-                x = new Scanner(new File("Score"))
+                x = new Scanner(new File("Score"));
                 
             } catch (IOException e) {
                 System.out.println("df");
