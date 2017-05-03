@@ -28,12 +28,12 @@ public class GameState {
 	}
 	
 	public boolean guessChampion(String guess) {
-		if (index < champions.size() && getCurrentChampion().guessName(guess)) {
+		boolean correct = getCurrentChampion().guessName(guess);
+		if (index < champions.size() && correct) {
 			score++;
-			return true;
 		}
 		increaseIndex();
-		return false;
+		return correct;
 	}
 	
 	public Champion getCurrentChampion() {
