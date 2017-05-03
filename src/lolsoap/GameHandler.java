@@ -10,6 +10,11 @@ import java.util.UUID;
 
 import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Formatter;
 import javax.jws.WebService;
 
 /*
@@ -40,6 +45,7 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public UUID[] findGames() {
 		Set<UUID> keys = games.keySet();
+                SaveHighScore();
 		return keys.toArray(new UUID[0]);
 	}
 	
@@ -156,4 +162,51 @@ public class GameHandler implements LolSOAPI {
 		}
 		return game;
 	}
+        
+        String Scores[] = {"one" , "Two" , "Trhee"};
+        String writeableString = "";
+        private Formatter x;
+        
+        public void SaveHighScore() {
+            
+            try {
+                
+                x = new Formatter("Scores.txt");
+                FileWriter fw = new FileWriter("C:\\Users\\kristofer\\Documents\\LolProjekt\\HighScore/Score.txt");
+                BufferedWriter bw = new BufferedWriter(fw);
+                
+                for(String item : Scores) {
+                    writeableString += item + ",";
+                }
+               
+                //Nederstående linje sletter det sidste komma så det er lettere at parse.
+                writeableString = writeableString.substring(0 , writeableString.length() - 1);
+
+                bw.write(writeableString);
+                
+                System.out.println("Programmet udskriver score og skriver til fil via array");
+                
+                bw.close();
+            } catch (IOException e) {
+                System.out.println("df");
+            }
+            
+        }
+        
+        public void GetHighScore() {
+            
+            // ikke helt done endnu
+            
+            try {
+                
+                x = new Scanner(new File("Score"))
+                
+            } catch (IOException e) {
+                System.out.println("df");
+            }
+            
+            
+        }
+        
+        
 }

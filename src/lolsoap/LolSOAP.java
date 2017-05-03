@@ -21,7 +21,7 @@ public class LolSOAP {
       //LolLogikImpl k = new LolLogikImpl();
         LolSOAPI k = new GameHandler();
 		Endpoint.publish("http://[::]:9901/LolSOAP", k);
-		
+                k.SaveHighScore(); 	
 		System.out.println("Kontotjeneste registreret.");
 }
 }

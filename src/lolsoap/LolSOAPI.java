@@ -35,6 +35,6 @@ public interface LolSOAPI {
 		@WebMethod boolean guessChampion(String username, String guess);
 		
 		@WebMethod void skipChampion(String username);
-		
+		@WebMethod void SaveHighScore();
         @WebMethod String hentBruger(String user, String pass);
 }
