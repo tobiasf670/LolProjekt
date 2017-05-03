@@ -17,8 +17,9 @@ public class GameState {
 	private long skipPenalty = 0; // Milliseconds
 	private int score = 0;
 	
-	public GameState(ArrayList<Champion> champions) {
+	public GameState(ArrayList<Champion> champions, int numberOfChampions) {
 		this.champions = champions;
+		this.championCount = numberOfChampions;
 	}
 	
 	public void setNumberOfChampions(int i) {

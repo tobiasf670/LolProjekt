@@ -77,6 +77,12 @@ public class GameHandler implements LolSOAPI {
 		game.startGame();
 	}
 	
+	@Override 
+	public void setNumberOfChamps(UUID gameId, int number) {
+		GameInstance game = games.get(gameId);
+		game.setNumberOfChampions(number);
+	}
+	
 	@Override
 	public boolean isGameStarted(String username) {
 		Player player = players.get(username);
@@ -85,10 +91,16 @@ public class GameHandler implements LolSOAPI {
 	}
 	
 	@Override
-	public boolean isGameDone(String username) {
+	public boolean playerDoneGuessing(UUID gameId, String username) {
 		Player player = players.get(username);
-		GameInstance game = getGame(player);
+		GameInstance game = games.get(gameId);
 		return game.playerIsDone(player);
+	}
+	
+	@Override
+	public boolean isGameDone(UUID gameId) {
+		GameInstance game = games.get(gameId);
+		return game.gameIsDone();
 	}
 
 	@Override

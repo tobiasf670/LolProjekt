@@ -26,8 +26,10 @@ public interface LolSOAPI {
 
 		@WebMethod void joinGame(UUID gameId, String username);
 		@WebMethod void startGame(String username);
+		@WebMethod void setNumberOfChamps(UUID gameId, int number);
         @WebMethod boolean isGameStarted(String username);
-		@WebMethod boolean isGameDone(String username);
+        @WebMethod boolean playerDoneGuessing(UUID gameId, String username);
+		@WebMethod boolean isGameDone(UUID gameId);
 		@WebMethod boolean didIWin(UUID gameId, String username);
         @WebMethod String getWinner(UUID gameId);
         

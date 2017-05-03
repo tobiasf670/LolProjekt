@@ -34,12 +34,14 @@ public class GameInstance {
 	private UUID id;
 	private boolean gameStarted = false;
 	private long startTime;
+	private int numberOfChampions = 20;
 	private Player winner = null;
 	private ArrayList<Champion> championArray;
 
 	private HashSet<Player> players;
 	private HashMap<Player, GameState> playerGameStates = new HashMap<>();
 
+	// TODO maybe add a player as the creator of the game. Where only they can start the game.
 	public GameInstance() {
 		this.players = new HashSet<Player>();
 		
@@ -48,6 +50,14 @@ public class GameInstance {
 		// https://en.wikipedia.org/wiki/Universally_unique_identifier.
 		id = UUID.randomUUID();
 		championArray = makeChampionArray();
+	}
+	
+	public void setNumberOfChampions(int numberOfChampions) {
+		if(!gameStarted){
+			playerGameStates.forEach((p, g) -> {
+				g.setNumberOfChampions(numberOfChampions);
+			});
+		}
 	}
 
 	public UUID getGameId() {
@@ -64,13 +74,12 @@ public class GameInstance {
 	public void addPlayer(Player p) {
 		this.players.add(p);
 		p.joinGame(id);
-		playerGameStates.put(p, new GameState(championArray));
+		playerGameStates.put(p, new GameState(championArray, numberOfChampions));
 	}
 
 	public boolean guessChamp(Player p, String guess) {
 		GameState gameState = playerGameStates.get(p);
 		boolean correct = gameState.guessChampion(guess);
-		// TODO we need to figure out when the player knows the game is over.
 		checkIfDone(gameState, p);
 		return correct;
 	}
