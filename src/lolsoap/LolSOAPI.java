@@ -27,7 +27,7 @@ public interface LolSOAPI {
 		@WebMethod void startGame(String username);
 		@WebMethod boolean isGameDone(String username);
 		@WebMethod boolean didIWin(UUID gameId, String username);
-        @WebMethod String getWinner(UUID gameId);
+                @WebMethod String getWinner(UUID gameId);
         
 		@WebMethod String getChampionImgUrl(String username);
 		@WebMethod String getChampionTitle(String username);    
@@ -35,6 +35,5 @@ public interface LolSOAPI {
 		@WebMethod boolean guessChampion(String username, String guess);
 		
 		@WebMethod void skipChampion(String username);
-		@WebMethod void SaveHighScore();
         @WebMethod String hentBruger(String user, String pass);
 }

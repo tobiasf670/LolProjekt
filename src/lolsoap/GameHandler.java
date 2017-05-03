@@ -162,12 +162,13 @@ public class GameHandler implements LolSOAPI {
 		}
 		return game;
 	}
-        
+            
+        public void SaveHighScore() {
+
         String Scores[] = {"one" , "Two" , "Trhee"};
         String writeableString = "";
-        private Formatter x;
-        
-        public void SaveHighScore() {
+            
+            Formatter x;
             
             try {
                 
