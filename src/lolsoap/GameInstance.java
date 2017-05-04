@@ -90,7 +90,7 @@ public class GameInstance {
 	}
 	
 	public boolean gameIsDone() {
-		return winner == null;
+		return winner != null;
 	}
 	
 	public boolean isGameStarted() {
@@ -146,9 +146,21 @@ public class GameInstance {
 		for (Player p : players) {
 			GameState gameState = playerGameStates.get(p);
 			allDone &= gameState.gameDone();
-			if (allDone && gameState.getScore() > maxScoreSofar){
-				maxScoreSofar = gameState.getScore();
-				prospectiveWinner = p;
+			if (allDone && gameState.getScore() >= maxScoreSofar){
+				int thisScore = gameState.getScore();
+				// finds the winner if they both have same score.
+				if (maxScoreSofar == thisScore && prospectiveWinner != null) {
+					GameState proWinGame = playerGameStates.get(prospectiveWinner);
+					if (proWinGame.getEndTime() > gameState.getEndTime()) {
+						prospectiveWinner = p;
+					}
+				}
+				// finds the winner in all other cases.
+				else {
+					maxScoreSofar = thisScore;
+					prospectiveWinner = p;	
+				}
+				
 			}
 		}
 		if (allDone) {
