@@ -11,10 +11,12 @@ import java.util.UUID;
 import brugerautorisation.data.Bruger;
 import brugerautorisation.transport.rmi.Brugeradmin;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Formatter;
+import java.util.Scanner;
 import javax.jws.WebService;
 
 /*
@@ -226,7 +228,7 @@ public class GameHandler implements LolSOAPI {
             
             try {
                 
-                x = new Scanner(new File("Score"));
+                Scanner x = new Scanner(new File("Score"));
                 
             } catch (IOException e) {
                 System.out.println("df");

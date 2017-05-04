@@ -7,6 +7,7 @@ package lolsoap;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
@@ -82,7 +83,7 @@ static LolSOAPI spil;
 	  }
     }
 
-    private static boolean spilSpillet(LolSOAPI face,String p) {
+    private static boolean spilSpillet(LolSOAPI face,String p) throws InterruptedException {
     spil = face;
      UUID id = null;
     
@@ -142,7 +143,7 @@ static LolSOAPI spil;
                // System.out.println("          "+gameNr+"          "+spil.getUsernames(setOfGames[i]));
                 //System.out.println("Game nr."+gameNr+" Med spiller : "+ spil.getUsernames(setOfGames[i]));
                // System.out.format("%10s%10s%10s%10s\n", "Game nr", gameNr, "Spiller",spil.getUsernames(setOfGames[i]));
-             System.out.format("%-15s%-15s\n",gameNr,spil.getUsernames(setOfGames[i]));
+             System.out.format("%-15s%-15s\n",gameNr,Arrays.toString(spil.getUsernames(setOfGames[i])));
             }
             
             System.out.println("Indtast nr, på det game du vil joine ( gå tilbage klik -1)");
@@ -156,6 +157,7 @@ static LolSOAPI spil;
            }
             if(gameValg <= setOfGames.length){
                 spil.joinGame(setOfGames[gameValg-1], p);
+                waitForStart(id, p);
                 startGame(p, setOfGames[gameValg-1], scan);
                 break;
                 
@@ -175,14 +177,27 @@ static LolSOAPI spil;
       
           case 3 :
              id = spil.createNewGame(p);
+              waitingRoomm(id);
              System.out.println("\u001B[32m"+"Der er nu oprettet et spil, spil det fra menu ved at klikke 2"+"\u001B[0m");
              
       break;
+      
+      
           case 4 :
               
               return false;
               //break;
               //return false;
+              
+          case 5 : 
+               System.out.format("%-20s%-20s%12s\n","Game","Spiller","Vinderen");
+             UUID [] games = spil.getPlayersGames(p);
+              for (int i = 0; games.length > i; i++) {
+                 
+                   System.out.format("%-15s%-20s%15s\n",i,Arrays.toString( spil.getUsernames(games[i])),spil.getWinner(games[i]));
+                 
+              }
+              break;
               
           default : 
               System.out.println("\u001B[31m"+"Dit valgte input er ikke i menuen"+"\u001B[0m");
@@ -205,8 +220,8 @@ static LolSOAPI spil;
     public static  String startGame(String p, UUID id, Scanner scan){
         spil.startGame(p);  
              
-             while(!spil.isGameDone(p)){
-         System.out.println(spil.isGameDone(p));
+             while(!spil.playerDoneGuessing(id, p)){
+         
         System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));
    
       
@@ -214,8 +229,8 @@ static LolSOAPI spil;
       boolean tryAgain= true;
           do {      
              
-              //String guess = scan.next();
-                String guess = "skip";
+              String guess = scan.next();
+                //String guess = "skip";
               if(guess.equals("done")){
                   return "";
               }
@@ -232,9 +247,8 @@ static LolSOAPI spil;
     }
               else  {
                 
-                  System.out.println("Forkert, prøv igen.(Hvis du ikke kan gætte det, skriv skip");
-                   System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));
-                  tryAgain = true;
+                  System.out.println("Forkert");               
+                  tryAgain = false;
                   }
               
               
@@ -244,10 +258,40 @@ static LolSOAPI spil;
           
     }
              System.out.println("FØR IF og ID ER"+id);
-        if(spil.isGameDone(p)){
-            System.out.println("Efter IF og ID ER"+id);
-            System.out.println("Vinderen er : " + spil.getWinner(id));
-        }
-        return spil.getWinner(id);
+       
+        
+        return "sup";
 }
+    
+     public static  boolean waitingRoomm(UUID id) throws InterruptedException{
+         Thread thread = new Thread();
+         
+         String [] usersInGame = spil.getUsernames(id);
+         UUID [] gg = spil.findGames();
+         //System.out.println("min pik er "+usersInGame.length);
+         while(usersInGame.length < 2){
+          thread.sleep(1500);   
+         usersInGame = spil.getUsernames(id);
+         System.out.println("Jeg venter");
+         System.out.println(usersInGame.length);
+         }
+         
+         return true; 
+         
+         
+     }
+     
+      public static  boolean waitForStart(UUID id, String p) throws InterruptedException{
+         Thread thread = new Thread();
+         
+         //System.out.println("min pik er "+usersInGame.length);
+         while(!spil.isGameStarted(p)){
+          thread.sleep(1500);   
+         System.out.println("Spillet er ikke startet");
+         }
+         
+         return true; 
+         
+         
+     }
 }
