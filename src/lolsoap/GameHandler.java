@@ -5,6 +5,7 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.UUID;
@@ -45,11 +46,11 @@ public class GameHandler implements LolSOAPI {
 	
 	@Override
 	public UUID[] findGames() {
-		Set<UUID> keys = games.keySet();
+		Set<UUID> keys = new HashSet<UUID>(games.keySet());
 		// this filters out non-joinable games.
 		keys.removeIf(k -> {
 			GameInstance game = games.get(k);
-			return !game.isGameStarted();
+			return game.isGameStarted();
 		});
 		return keys.toArray(new UUID[0]);
 	}
