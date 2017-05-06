@@ -15,7 +15,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Formatter;
 import javax.jws.WebService;
 
@@ -64,29 +63,37 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public String[] getUsernames(UUID gameId) {
 		GameInstance game = games.get(gameId);
-		String[] players = game.getUsernames();
-		return players;
+		if (game != null) {
+			String[] players = game.getUsernames();
+			return players;			
+		}
+		return null;
 	}
 
 	@Override
 	public void joinGame(UUID gameId, String username) {
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		game.addPlayer(player);
+		if (player != null && game != null){
+			game.addPlayer(player);	
+		}
 	}
 	
 	@Override
 	public UUID[] getPlayersGames(String username) {
 		Player player = players.get(username);
-		Set<UUID> gamesSet = player.getGames();
-		return gamesSet.toArray(new UUID[0]);
+		if (player != null) {
+			Set<UUID> gamesSet = player.getGames();
+			return gamesSet.toArray(new UUID[0]);
+		}
+		return null;
 	}
 	
 	@Override
 	public int getScore(UUID gameId, String username) {
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		if (game.gameIsDone()){
+		if (player != null && game != null && game.gameIsDone()){
 			return game.getScore(player);
 		}
 		return 0;
@@ -96,7 +103,7 @@ public class GameHandler implements LolSOAPI {
 	public long getTimeTaken(UUID gameId, String username){
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		if (game.gameIsDone()){
+		if (player != null && game != null && game.gameIsDone()){
 			return game.getTimeTaken(player);
 		}
 		return 0;
@@ -105,54 +112,75 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public void startGame(String username) {
 		Player player = players.get(username);
-		GameInstance game = getGame(player);
-		game.startGame();
+		if (player != null) {
+			GameInstance game = getGame(player);
+			if (game != null) {
+				game.startGame();	
+			}
+		}
 	}
 	
 	@Override 
 	public void setNumberOfChamps(UUID gameId, int number) {
 		GameInstance game = games.get(gameId);
-		game.setNumberOfChampions(number);
+		if (game != null) {
+			game.setNumberOfChampions(number);
+		}
 	}
 	
 	@Override
 	public boolean isGameStarted(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		return game.isGameStarted();
+		if (game != null) {
+			return game.isGameStarted();
+		}
+		return false;
 	}
 	
 	@Override
 	public boolean playerDoneGuessing(UUID gameId, String username) {
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		return game.playerIsDone(player);
+		if (player != null && game != null) {
+			return game.playerIsDone(player);
+		}
+		return false;
 	}
 	
 	@Override
 	public boolean isGameDone(UUID gameId) {
 		GameInstance game = games.get(gameId);
-		return game.gameIsDone();
+		if (game != null) {
+			return game.gameIsDone();	
+		}
+		return false;
 	}
 
 	@Override
 	public boolean didIWin(UUID gameId, String username) {
 		Player player = players.get(username);
 		GameInstance game = games.get(gameId);
-		return game.hasWon(player);
+		if (player != null && game != null) {
+			return game.hasWon(player);	
+		}
+		return false;
 	}
 	
 	@Override
 	public String getWinner(UUID gameId) {
 		GameInstance game = games.get(gameId);
-		return game.getWinner();
+		if (game != null) {
+			return game.getWinner();	
+		}
+		return "";
 	}
 
 	@Override
 	public String getChampionImgUrl(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		if (player != null && game != null) {
+		if (game != null) {
 			if (game.isGameStarted()) {
 				Champion champion = game.getCurrentChampion(player);
 				return  champion.getUrl();	
@@ -166,7 +194,7 @@ public class GameHandler implements LolSOAPI {
 	public String getChampionTitle(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		if (player != null && game != null) {
+		if (game != null) {
 			if (game.isGameStarted()) {
 				Champion champion = game.getCurrentChampion(player);
 				return  champion.getTitle();
@@ -182,11 +210,8 @@ public class GameHandler implements LolSOAPI {
 	public boolean guessChampion(String username, String guess) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		if (player != null && game != null) {
-			if (game.isGameStarted()) {
-				return game.guessChamp(player, guess);
-			}
-			return false;
+		if (game != null && game.isGameStarted()) {
+			return game.guessChamp(player, guess);
 		}
 		return false;
 	}
@@ -195,7 +220,7 @@ public class GameHandler implements LolSOAPI {
 	public void skipChampion(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		if (player != null && game != null && game.isGameStarted()) {
+		if (game != null && game.isGameStarted()) {
 			game.skip(player);
 		}
 	}
