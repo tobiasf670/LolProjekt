@@ -45,7 +45,17 @@ public class GameHandler implements LolSOAPI {
 	@Override
 	public UUID[] findGames() {
 		Set<UUID> keys = games.keySet();
-//                SaveHighScore();
+		// this filters out non-joinable games.
+		keys.removeIf(k -> {
+			GameInstance game = games.get(k);
+			return !game.isGameStarted();
+		});
+		return keys.toArray(new UUID[0]);
+	}
+	
+	@Override
+	public UUID[] findAllGames() {
+		Set<UUID> keys = games.keySet();
 		return keys.toArray(new UUID[0]);
 	}
 	
@@ -68,6 +78,26 @@ public class GameHandler implements LolSOAPI {
 		Player player = players.get(username);
 		Set<UUID> gamesSet = player.getGames();
 		return gamesSet.toArray(new UUID[0]);
+	}
+	
+	@Override
+	public int getScore(UUID gameId, String username) {
+		Player player = players.get(username);
+		GameInstance game = games.get(gameId);
+		if (game.gameIsDone()){
+			return game.getScore(player);
+		}
+		return 0;
+	}
+	
+	@Override 
+	public long getTimeTaken(UUID gameId, String username){
+		Player player = players.get(username);
+		GameInstance game = games.get(gameId);
+		if (game.gameIsDone()){
+			return game.getTimeTaken(player);
+		}
+		return 0;
 	}
 
 	@Override
@@ -121,8 +151,11 @@ public class GameHandler implements LolSOAPI {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
 		if (player != null && game != null) {
-			Champion champion = game.getCurrentChampion(player);
-			return  champion.getUrl();
+			if (game.isGameStarted()) {
+				Champion champion = game.getCurrentChampion(player);
+				return  champion.getUrl();	
+			}
+			return "Game not started";
 		}
 		return "Error";
 	}
@@ -132,8 +165,11 @@ public class GameHandler implements LolSOAPI {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
 		if (player != null && game != null) {
-			Champion champion = game.getCurrentChampion(player);
-			return  champion.getTitle();
+			if (game.isGameStarted()) {
+				Champion champion = game.getCurrentChampion(player);
+				return  champion.getTitle();
+			}
+			return "Game not started";
 		}
 		// TODO real error message.
 		return "Error";
@@ -145,7 +181,10 @@ public class GameHandler implements LolSOAPI {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
 		if (player != null && game != null) {
-			return game.guessChamp(player, guess);
+			if (game.isGameStarted()) {
+				return game.guessChamp(player, guess);
+			}
+			return false;
 		}
 		return false;
 	}
@@ -154,8 +193,8 @@ public class GameHandler implements LolSOAPI {
 	public void skipChampion(String username) {
 		Player player = players.get(username);
 		GameInstance game = getGame(player);
-		if (player != null && game != null) {
-			game.skip(player);			
+		if (player != null && game != null && game.isGameStarted()) {
+			game.skip(player);
 		}
 	}
 

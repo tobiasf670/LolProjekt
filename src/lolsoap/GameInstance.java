@@ -170,15 +170,19 @@ public class GameInstance {
 		}
 	}
 	
+	public int getScore(Player player) {
+		GameState gameState = playerGameStates.get(player);
+		return gameState.getScore();
+	}
+	
 	public String getSerializedGame() {
 		if (winner != null) {
 			GameState gameState = playerGameStates.get(winner);
 			String info =
 					id.toString() + " " 
 				+ winner.getBrugernavn() + " "
-				// TODO add champion count
-				+ gameState.getScore() + " "
-				+ gameState.getEndTime() + "\n";
+				+ gameState.getScore() + "/" + numberOfChampions + " "
+				+ (gameState.getEndTime() - startTime) + "\n";
 			return info;
 		}
 		return "";

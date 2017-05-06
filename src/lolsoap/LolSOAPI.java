@@ -21,8 +21,11 @@ public interface LolSOAPI {
     
 		@WebMethod UUID createNewGame(String username);
 		@WebMethod UUID[] findGames();
+		@WebMethod UUID[] findAllGames();
 		@WebMethod String[] getUsernames(UUID gameId);
 		@WebMethod UUID[] getPlayersGames(String username);
+		@WebMethod int getScore(UUID gameId, String username);
+		@WebMethod long getTimeTaken(UUID gameId, String username);
 
 		@WebMethod void joinGame(UUID gameId, String username);
 		@WebMethod void startGame(String username);
