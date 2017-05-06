@@ -6,6 +6,7 @@
 package lolsoap;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -250,6 +251,8 @@ public class GameInstance {
 				Logger.getLogger(GameInstance.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
+                
+                Collections.shuffle(newArray);
 		return newArray;
 	}
 }

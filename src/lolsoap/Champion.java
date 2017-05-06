@@ -22,7 +22,7 @@ public class Champion {
    
     public Champion(JSONObject obj, String url) throws JSONException{
         
-        name = obj.getString("name");
+        name = obj.getString("key").replaceAll(" ", "");
         title = obj.getString("title");
         this.url = url;
     }
