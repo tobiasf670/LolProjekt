@@ -35,7 +35,7 @@ public class GameHandler implements LolSOAPI {
 		// TODO add error handling
 		Player player = players.get(username);
 		if (player != null) {
-			GameInstance game = new GameInstance();
+			GameInstance game = new GameInstance(player);
 			UUID id = game.getGameId();
 			game.addPlayer(player);
 			games.put(id, game);
@@ -116,7 +116,7 @@ public class GameHandler implements LolSOAPI {
 		if (player != null) {
 			GameInstance game = getGame(player);
 			if (game != null) {
-				game.startGame();	
+				game.startGame(player);	
 			}
 		}
 	}

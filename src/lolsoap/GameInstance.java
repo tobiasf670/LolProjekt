@@ -36,6 +36,7 @@ public class GameInstance {
 	private boolean gameStarted = false;
 	private long startTime;
 	private int numberOfChampions = 20;
+	private Player creator = null;
 	private Player winner = null;
 	private ArrayList<Champion> championArray;
 
@@ -43,9 +44,9 @@ public class GameInstance {
 	private HashMap<Player, GameState> playerGameStates = new HashMap<>();
 
 	// TODO maybe add a player as the creator of the game. Where only they can start the game.
-	public GameInstance() {
+	public GameInstance(Player p) {
 		this.players = new HashSet<Player>();
-		
+		this.creator = p;
 		// This creates a UUID which is a semi-random identifier of 128 bits;
 		// read more here :
 		// https://en.wikipedia.org/wiki/Universally_unique_identifier.
@@ -65,8 +66,8 @@ public class GameInstance {
 		return id;
 	}
 
-	public void startGame() {
-		if (!gameStarted) {
+	public void startGame(Player player) {
+		if (!gameStarted && player == creator) {
 			gameStarted = true;
 			startTime = System.currentTimeMillis();
 		}
