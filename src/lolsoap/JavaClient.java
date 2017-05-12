@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.namespace.QName;
@@ -94,13 +95,15 @@ public class JavaClient {
         while (true) {
             Scanner scan = new Scanner(System.in);
             UUID[] setOfGames;
+            UUID[] setOfAllGames;
             System.out.println("**********-MENU-*****************");
             System.out.println("*********************************");
             System.out.println("Klik 1 ......... Find et spil");
             System.out.println("Klik 2 ......... Start spil");
             System.out.println("Klik 3 ......... Lav et spil");
-            System.out.println("Klik 4 ......... Se vinder af dine spil");
-            System.out.println("Klik 5 ......... Exit");
+            System.out.println("Klik 4 ......... Se alle spil");
+            System.out.println("Klik 5 ......... Se vinder af dine spil");
+            System.out.println("Klik 6 ......... Exit");
             System.out.println("*********************************");
             System.out.println("*********************************");
             System.out.println();
@@ -171,11 +174,13 @@ public class JavaClient {
 
                 case 3:
                     id = spil.createNewGame(p);
-                    if (waitingRoomm(id)) {
+                        if (waitingRoomm(id)) {
                         try {                   // Problemer med at lukke en tråd når en anden spiller join gamet 
                                                 // derfor bliver vi nød til at simulere et click.
                             Robot robot = new Robot();
                             // Simulate a key press
+                              robot.keyPress(KeyEvent.VK_A);
+                            robot.keyRelease(KeyEvent.VK_A);
                             robot.keyPress(KeyEvent.VK_ENTER);
                             robot.keyRelease(KeyEvent.VK_ENTER);
 
@@ -190,12 +195,29 @@ public class JavaClient {
                     System.out.println("\u001B[32m" + "Der er nu oprettet et spil, spil det fra menu ved at klikke 2" + "\u001B[0m");
 
                     break;
+                    
+                    
+                case 4 :     
+                    setOfAllGames = spil.findAllGames();
+                    if (setOfAllGames.length == 0) {
 
-                case 5:
+                        System.out.println("\u001B[31m" + "Ikke nogle aktive spil fundet" + "\u001B[0m");
+
+                        break;
+                    }
+                    System.out.format("%-15s%-15s\n", "Game nr", "Spiller");
+
+                    for (int i = 0; setOfAllGames.length > i; i++) {
+                        int gameNr = i + 1;
+                        System.out.format("%-15s%-15s\n", gameNr, Arrays.toString(spil.getUsernames(setOfAllGames[i])));
+                    }
+
+                        break;
+                case 6:
 
                     return false;
        
-                case 4:
+                case 5:
                     System.out.format("%-20s%-20s%12s\n", "Game", "Spiller", "Vinderen");
                     UUID[] games = spil.getPlayersGames(p);
                     for (int i = 0; games.length > i; i++) {
@@ -217,7 +239,7 @@ public class JavaClient {
         spil.startGame(p);
 
         while (!spil.playerDoneGuessing(id, p)) {
-
+            System.out.println("er spillet færdig "+spil.playerDoneGuessing(id, p));
             System.out.println("Hvem har titlen : " + spil.getChampionTitle(p));
 
             boolean tryAgain = true;
@@ -225,6 +247,7 @@ public class JavaClient {
 
                 String guess = scan.next();
                 if (guess.equals("done")) {
+                    tryAgain = false;
                     break;
                 }
                 if (guess.equals("skip")) {
@@ -246,12 +269,17 @@ public class JavaClient {
             } while (tryAgain);
 
         }
-        
+        System.out.println("Din score blev : " +spil.getScore(id, p));
+        long millis = spil.getTimeTaken(id, p);
+        String hms = String.format("%02d:%02d:%02d", TimeUnit.MILLISECONDS.toHours(millis),
+            TimeUnit.MILLISECONDS.toMinutes(millis) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+            TimeUnit.MILLISECONDS.toSeconds(millis) - TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+    System.out.println("Din til blev : "+hms);
     }
 
     public static boolean waitingRoomm(UUID id) throws InterruptedException {
         Thread thread = new Thread();
-
+        
         String[] usersInGame = spil.getUsernames(id);
         UUID[] gg = spil.findGames();
         leaveRoom = true;
@@ -280,7 +308,7 @@ public class JavaClient {
                     }
                 }
             }
-        });;
+        });
         inputThread.start();
 
         while (usersInGame.length < 2 && leaveRoom) {
